@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.LauncherActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/background"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/loading"
+        android:contentDescription="@string/app_name"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/logo"
+        android:layout_gravity="center"
+        android:src="@drawable/loader_text"
+        android:contentDescription="@string/app_name"/>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avloadingIndicatorView"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:visibility="visible"
+        app:indicator="LineScale"
+        app:indicator_color="@color/text_white"
+        android:layout_marginBottom="32dp"
+        android:layout_gravity="center_horizontal|bottom" />
+</FrameLayout>
