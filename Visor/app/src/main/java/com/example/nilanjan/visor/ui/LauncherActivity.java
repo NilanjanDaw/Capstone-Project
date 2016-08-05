@@ -1,7 +1,10 @@
 package com.example.nilanjan.visor.ui;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,22 +13,34 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.example.nilanjan.visor.R;
+import com.example.nilanjan.visor.utils.Constants;
+import com.example.nilanjan.visor.utils.Coordinate;
+import com.example.nilanjan.visor.utils.HttpAsyncTask;
+import com.example.nilanjan.visor.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+
 public class LauncherActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final String TAG = "LauncherActivity";
     private static final int REQUEST_CODE = 10;
+    Intent intent;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    private LocationListener mLocationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +77,6 @@ public class LauncherActivity extends AppCompatActivity
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "onConnected: Connected");
         mLocationRequest = createLocationRequest();
-        int apiLevel = Build.VERSION.SDK_INT;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
@@ -94,6 +108,17 @@ public class LauncherActivity extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged: " + location.getLatitude() + " " + location.getLongitude());
+        intent = new Intent(this, MainActivity.class);
+        Coordinate locale = new Coordinate(location.getLatitude(), location.getLongitude());
+        setLocation(locale);
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            locale.setName(addressList.get(0).getAddressLine(2));
+        } catch (IOException e) {
+            Utils.showToast(getResources().getString(R.string.error), this);
+            e.printStackTrace();
+        }
 
     }
 
@@ -108,18 +133,41 @@ public class LauncherActivity extends AppCompatActivity
                         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
                     } else {
                         Log.d(TAG, "onRequestPermissionsResult: Location is required");
-                        showToast("Location is required");
+                        Utils.showToast("Location is required", getApplicationContext());
                     }
                 } else {
                     Log.d(TAG, "onRequestPermissionsResult: Location is required");
-                    showToast("Location is required");
+                    Utils.showToast("Location is required", getApplicationContext());
                     finish();
                 }
 
         }
     }
 
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+    public void setLocation(final Coordinate location) {
+
+        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                "location=" + location.getLatitude() + "," + location.getLongitude() +
+                "&key=" + Constants.API_KEY;
+        HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
+            @Override
+            public void processData(JSONArray array) {
+                try {
+                    location.setPlaceID(array.getJSONObject(0).getString("place_id"));
+                    Log.d(TAG, "processData: " + location.getPlaceID());
+                    JSONArray photos = array.getJSONObject(0).getJSONArray("photos");
+                    Log.d(TAG, "processData: " + photos.getJSONObject(0).getString("photo_reference"));
+                    location.setPhotoReference(photos.getJSONObject(0).getString("photo_reference"));
+                    intent.putExtra("coordinate", location);
+                    startActivity(intent);
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        asyncTask.execute(url);
     }
 }
