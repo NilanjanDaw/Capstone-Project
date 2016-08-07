@@ -44,7 +44,7 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
             if (statusCode == 200) {
                 Log.d(TAG, "doInBackground: Request: Successful");
                 String result = readResponse(inputStream);
-                delegate.processData(jsonResponseArray);
+                //delegate.processData(jsonResponseArray);
                 //Log.d("Response", result);
             } else {
                 Log.d(TAG, "doInBackground: Request: Failed");
@@ -68,6 +68,12 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        delegate.processData(jsonResponseArray);
     }
 
     public interface OnFinish {

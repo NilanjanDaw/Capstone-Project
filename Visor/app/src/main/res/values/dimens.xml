@@ -32,4 +32,7 @@
 
     <dimen name="text_view_padding">16dp</dimen>
     <dimen name="list_side_margin">4dp</dimen>
+    <dimen name="text_size_title">35sp</dimen>
+
+    <dimen name="option_image_height">200dp</dimen>
 </resources>

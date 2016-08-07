@@ -1,10 +1,8 @@
 package com.example.nilanjan.visor.ui;
 
-import android.database.Cursor;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -24,7 +22,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     @Bind(R.id.backdrop)
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .load(backdropUrl)
                 .placeholder(getDrawable(R.drawable.placeholder))
                 .into(cityBackdrop);
-        int columnCount = getResources().getInteger(R.integer.list_column_count);
+        final int columnCount = getResources().getInteger(R.integer.list_column_count);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(
                 columnCount,
                 StaggeredGridLayoutManager.VERTICAL
@@ -59,25 +57,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(OptionsData data) {
                 Log.d(TAG, "onItemClick: " + data.getOptionName());
+                if (!data.getOptionName().equalsIgnoreCase("memories")) {
+                    Intent intent = new Intent(getBaseContext(), MenuActivity.class);
+                    intent.putExtra("mode", data.getOptionName());
+                    intent.putExtra("coordinate", coordinate);
+                    startActivity(intent);
+                } else {
+                    Log.d(TAG, "onItemClick: Not yet ready");
+                }
             }
         });
         options.setLayoutManager(layoutManager);
         options.setAdapter(adapter);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 
     public List<OptionsData> getData() {
