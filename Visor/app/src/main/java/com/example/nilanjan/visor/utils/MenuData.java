@@ -1,19 +1,25 @@
 package com.example.nilanjan.visor.utils;
 
+import java.io.Serializable;
+
 /**
  * Created by nilan on 07-Aug-16.
  */
-public class MenuData {
+public class MenuData implements Serializable {
 
-    private String title, address, thumbnailReference, rating;
+    private String title, address, thumbnailReference;
+    private double rating, latitude, longitude;
     private boolean isOpen;
 
-    public MenuData(String title, String address, String thumbnailReference, String rating, boolean isOpen) {
+    public MenuData(String title, String address, String thumbnailReference,
+                    double latitude, double longitude, double rating, boolean isOpen) {
         this.title = title;
         this.address = address;
         this.thumbnailReference = thumbnailReference;
         this.rating = rating;
         this.isOpen = isOpen;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getTitle() {
@@ -28,7 +34,15 @@ public class MenuData {
         return thumbnailReference;
     }
 
-    public String getRating() {
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getRating() {
         return rating;
     }
 

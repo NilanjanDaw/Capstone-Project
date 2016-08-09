@@ -14,36 +14,44 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by nilan on 07-Aug-16.
+ * Created by nilanjan on 07-Aug-16.
  */
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuHolder> {
 
     List<MenuData> data;
+    OnItemClickListener listener;
 
-    public MenuAdapter(List<MenuData> data) {
+    public MenuAdapter(List<MenuData> data, OnItemClickListener listener) {
         this.data = data;
+        this.listener = listener;
     }
 
     @Override
     public MenuHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_details, parent, false);
-        MenuHolder holder = new MenuHolder(view);
-        return holder;
+        return new MenuHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MenuHolder holder, int position) {
-        String url = "" + data.get(position).getThumbnailReference();
+        String backdropUrl = Constants.photoBaseURL + "?maxwidth=" + Constants.imageResolution
+                + "&photoreference=" + data.get(position).getThumbnailReference()
+                + "&key=" + Constants.API_KEY;
         Picasso.with(holder.view.getContext())
-                .load(url)
+                .load(backdropUrl)
                 .into(holder.thumbnail);
         holder.title.setText(data.get(position).getTitle());
         holder.address.setText(data.get(position).getAddress());
+        holder.bind(data.get(position), listener);
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(MenuData data);
     }
 
     public static class MenuHolder extends RecyclerView.ViewHolder {
@@ -59,6 +67,15 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuHolder> {
             thumbnail = (AppCompatImageView) itemView.findViewById(R.id.thumbnail);
             title = (TextView) itemView.findViewById(R.id.place_title);
             address = (TextView) itemView.findViewById(R.id.place_address);
+        }
+
+        public void bind(final MenuData clickData, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(clickData);
+                }
+            });
         }
     }
 }

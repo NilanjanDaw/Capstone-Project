@@ -12,4 +12,5 @@ public class Constants {
     public static final String API_KEY = "AIzaSyCWI_zC09twQmkzmTdq6sWuKXqWrx5vDDk";
     public static final String[] PLACES_OF_INTEREST = {"amusement_park", "aquarium", "art_gallery", "casino", "church",
             "movie_theater", "museum", "night_club", "park", "shopping_mall", "stadium", "zoo"};
+    public static String photoBaseURL = "https://maps.googleapis.com/maps/api/place/photo";
 }

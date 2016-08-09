@@ -14,4 +14,11 @@
     <string name="error">Houston we have a problem!</string>
     <integer name="list_column_count">1</integer>
     <integer name="option_column_count">2</integer>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="details_head">Going Places</string>
+    <!-- TODO Remove key -->
+    <string name="google_maps_API">AIzaSyC1C7oWIHi_0SIFmS5e4w42VBdsnJiEkQY</string>
+    <string name="navigate">Navigate</string>
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
 </resources>

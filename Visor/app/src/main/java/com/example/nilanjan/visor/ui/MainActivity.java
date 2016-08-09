@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.recycler_view)
     RecyclerView options;
     private Coordinate coordinate;
-    private String baseURL = "https://maps.googleapis.com/maps/api/place/photo";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         coordinate = (Coordinate) getIntent().getSerializableExtra("coordinate");
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(coordinate.getName());
-        String backdropUrl = baseURL + "?maxwidth=" + Constants.imageResolution
+        String backdropUrl = Constants.photoBaseURL + "?maxwidth=" + Constants.imageResolution
                 + "&photoreference=" + coordinate.getPhotoReference()
                 + "&key=" + Constants.API_KEY;
         Picasso.with(this)

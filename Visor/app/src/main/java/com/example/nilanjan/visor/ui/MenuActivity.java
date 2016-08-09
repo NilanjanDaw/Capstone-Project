@@ -15,11 +15,11 @@ import com.example.nilanjan.visor.utils.Coordinate;
 import com.example.nilanjan.visor.utils.HttpAsyncTask;
 import com.example.nilanjan.visor.utils.MenuAdapter;
 import com.example.nilanjan.visor.utils.MenuData;
+import com.example.nilanjan.visor.utils.Utils;
 import com.example.nilanjan.visor.widgets.HeaderTextView;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,9 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @Bind(R.id.recycler_view_menu)
     RecyclerView recyclerView;
-    private String mode;
     private Coordinate coordinate;
-    private StaggeredGridLayoutManager layoutManager;
     private List<MenuData> data;
 
     @Override
@@ -45,14 +43,16 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        mode = intent.getStringExtra("mode");
+        String mode = intent.getStringExtra("mode");
+        Log.d(TAG, "onCreate: " + mode);
         coordinate = (Coordinate) intent.getSerializableExtra("coordinate");
         title.setText(mode);
         Log.d(TAG, "onCreate: " + coordinate.getPlaceID());
         progressBar.setVisibility(View.VISIBLE);
-        boolean status = getPlaces();
+        boolean status = getPlaces(mode);
+        Log.d(TAG, "onCreate: " + status);
         final int columnCount = getResources().getInteger(R.integer.option_column_count);
-        layoutManager = new StaggeredGridLayoutManager(
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(
                 columnCount,
                 StaggeredGridLayoutManager.VERTICAL
         );
@@ -60,11 +60,17 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
-    public boolean getPlaces() {
+    public boolean getPlaces(String mode) {
 
         String params = "";
-        for (String parameter : Constants.PLACES_OF_INTEREST) {
-            params += parameter + "|";
+        if (mode.equalsIgnoreCase(getResources().getString(R.string.places))) {
+            for (String parameter : Constants.PLACES_OF_INTEREST) {
+                params += parameter + "|";
+            }
+        } else if (mode.equalsIgnoreCase(getResources().getString(R.string.restaurant))) {
+            params = "restaurant|cafe";
+        } else if (mode.equalsIgnoreCase(getResources().getString(R.string.hotels))) {
+            params = "lodging";
         }
         params = params.substring(0, params.length() - 1);
         StringBuilder query = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
@@ -80,8 +86,17 @@ public class MenuActivity extends AppCompatActivity {
         final HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
             @Override
             public void processData(JSONArray array) {
-                List<MenuData> data = parseData(array);
-                MenuAdapter adapter = new MenuAdapter(data);
+                List<MenuData> data = Utils.parseData(array);
+                Log.d(TAG, "processData: " + data.size());
+                MenuAdapter adapter = new MenuAdapter(data, new MenuAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(MenuData data) {
+                        Intent intent = new Intent(getBaseContext(), DetailsActivity.class);
+                        intent.putExtra("data", data);
+                        intent.putExtra("coordinate", coordinate);
+                        startActivity(intent);
+                    }
+                });
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setAdapter(adapter);
             }
@@ -90,8 +105,5 @@ public class MenuActivity extends AppCompatActivity {
         return false;
     }
 
-    private List<MenuData> parseData(JSONArray array) {
-        List<MenuData> parsedList = new ArrayList<>();
-        return parsedList;
-    }
+
 }
