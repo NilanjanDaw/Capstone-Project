@@ -7,7 +7,8 @@ import net.simonvt.schematic.annotation.Table;
  * Created by nilanjan on 09-Aug-16.
  */
 
-@Database(version = MemoryDatabase.VERSION)
+@Database(version = MemoryDatabase.VERSION,
+    packageName = "com.example.nilanjan.visor.provider")
 public class MemoryDatabase {
     public static final int VERSION = 1;
     @Table(MemoryColumns.class)

@@ -5,8 +5,8 @@
     <dimen name="logo">4dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="fab_margin_vertical">36dp</dimen>
-    <dimen name="fab_margin_horizontal">26dp</dimen>
+    <dimen name="fab_margin_vertical">6dp</dimen>
+    <dimen name="fab_margin_horizontal">6dp</dimen>
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
 

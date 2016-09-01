@@ -32,6 +32,11 @@
             android:name=".ui.DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme" />
+        <provider
+            android:authorities="com.example.nilanjan.visor.MemoryProvider"
+            android:name="com.example.nilanjan.visor.provider.MemoryProvider"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

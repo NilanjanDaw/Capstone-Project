@@ -19,6 +19,7 @@
     <!-- TODO Remove key -->
     <string name="google_maps_API">AIzaSyC1C7oWIHi_0SIFmS5e4w42VBdsnJiEkQY</string>
     <string name="navigate">Navigate</string>
-    <string name="open">Open</string>
-    <string name="closed">Closed</string>
+    <string name="open">Status: Open</string>
+    <string name="closed">Status: Closed</string>
+    <string name="shareSubject">Hey! Check this place out!</string>
 </resources>

@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -46,15 +47,14 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
     Coordinate coordinate;
     MenuData destinationData;
     GoogleMap googleMap;
-
+    @Bind(R.id.navigate)
+    Button navigate;
     @Bind(R.id.place_title)
     TextView placeTitle;
     @Bind(R.id.address)
     TextView address;
     @Bind(R.id.open)
     TextView open;
-    @Bind(R.id.navigate)
-    ImageButton navigate;
     @Bind(R.id.img)
     ImageView img;
     @Bind(R.id.ratingBar)
@@ -68,13 +68,6 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
         Intent intent = getIntent();
@@ -99,6 +92,21 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         Picasso.with(this)
                 .load(backdropUrl)
                 .into(img);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        mapFragment.getMapAsync(this);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                String uri = "http://maps.google.com/maps?saddr=" + destinationData.getLatitude() + "," + destinationData.getLongitude();
+                shareIntent.setType("text/plain");
+                String subject = getString(R.string.shareSubject);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, uri);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            }
+        });
         navigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,9 +116,6 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 startActivity(intent);
             }
         });
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(this);
-
     }
 
     @Override

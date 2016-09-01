@@ -12,10 +12,10 @@ import net.simonvt.schematic.annotation.TableEndpoint;
  */
 @ContentProvider(authority = MemoryProvider.AUTHORITY,
         database = MemoryDatabase.class,
-        packageName = "com.example.nilanjan.visor.utils.provider"
+        packageName = "com.example.nilanjan.visor.provider"
 )
 public class MemoryProvider {
-    public static final String AUTHORITY = "com.example.nilanjan.visor.utils.MemoryProvider";
+    public static final String AUTHORITY = "com.example.nilanjan.visor.MemoryProvider";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     public static Uri buildUri(String... paths) {

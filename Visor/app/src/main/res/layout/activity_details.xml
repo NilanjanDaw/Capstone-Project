@@ -25,14 +25,10 @@
             app:expandedTitleMarginStart="@dimen/collapsing_toolbar_margin_start"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <fragment
-                android:id="@+id/mapFragment"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <include layout="@layout/map_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/detail_map_height"
-                android:fitsSystemWindows="true"
-                app:layout_collapseMode="parallax" />
-
+                android:layout_height="wrap_content"
+                />
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
