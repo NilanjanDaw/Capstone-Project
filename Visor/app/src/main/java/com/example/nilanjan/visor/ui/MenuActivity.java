@@ -19,6 +19,7 @@ import com.example.nilanjan.visor.utils.Utils;
 import com.example.nilanjan.visor.widgets.HeaderTextView;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class MenuActivity extends AppCompatActivity {
         Log.d(TAG, "getPlaces: " + query);
         final HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
             @Override
-            public void processData(JSONArray array) {
+            public void processData(JSONArray array, JSONObject object) {
                 List<MenuData> data = Utils.parseData(array);
                 Log.d(TAG, "processData: " + data.size());
                 MenuAdapter adapter = new MenuAdapter(data, new MenuAdapter.OnItemClickListener() {
@@ -100,7 +101,7 @@ public class MenuActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setAdapter(adapter);
             }
-        });
+        }, this);
         asyncTask.execute(query.toString());
         return false;
     }

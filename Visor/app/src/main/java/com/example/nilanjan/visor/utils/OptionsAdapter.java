@@ -1,5 +1,6 @@
 package com.example.nilanjan.visor.utils;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nilanjan.visor.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,7 +37,10 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.Option> 
 
     @Override
     public void onBindViewHolder(Option holder, int position) {
-        holder.optionBackground.setImageDrawable(data.get(position).imageResource);
+        Picasso.with(holder.context)
+                .load(data.get(position).imageResource)
+                .fit()
+                .into(holder.optionBackground);
         holder.optionTitle.setText(data.get(position).optionName);
         holder.bind(data.get(position), listener);
 
@@ -51,12 +56,14 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.Option> 
     }
 
     public static class Option extends RecyclerView.ViewHolder {
+        public Context context;
         CardView cardView;
         ImageView optionBackground;
         TextView optionTitle;
 
         public Option(View itemView) {
             super(itemView);
+            context = itemView.getContext();
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             optionBackground = (ImageView) itemView.findViewById(R.id.backdrop_image);
             optionTitle = (TextView) itemView.findViewById(R.id.option_title);

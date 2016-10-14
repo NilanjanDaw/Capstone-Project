@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -116,6 +115,8 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 startActivity(intent);
             }
         });
+        Log.d(TAG, "onCreate: " + destinationData.getPlaceID());
+        //getLocationReview();
     }
 
     @Override
@@ -152,4 +153,25 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                     }
                 });
     }
+
+    /*public void getLocationReview() {
+        String url = "https://maps.googleapis.com/maps/api/place/details/json?" +
+                "placeid=" + destinationData.getPlaceID() +
+                "&key=" + Constants.API_KEY;
+        HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
+            @Override
+            public void processData(JSONArray array, JSONObject object) {
+                try {
+                    JSONArray reviews = object.optJSONArray("reviews");
+                    for(int i = 0;i < reviews.length();i++) {
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, this);
+
+        asyncTask.execute(url);
+    }*/
 }

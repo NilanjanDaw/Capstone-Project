@@ -44,8 +44,9 @@ public class Utils {
                         .getJSONObject("location").getDouble("lat");
                 double longitude = place.getJSONObject("geometry")
                         .getJSONObject("location").getDouble("lng");
+                String placeId = place.getString("place_id");
                 MenuData placeData = new MenuData(name, address, photoReference,
-                        latitude, longitude, rating, isOpen);
+                        latitude, longitude, rating, isOpen, placeId);
                 parsedList.add(placeData);
             } catch (JSONException e) {
                 e.printStackTrace();

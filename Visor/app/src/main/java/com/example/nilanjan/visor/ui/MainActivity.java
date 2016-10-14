@@ -73,14 +73,15 @@ public class MainActivity extends AppCompatActivity {
 
     public List<OptionsData> getData() {
         List<OptionsData> data = new ArrayList<>();
+
         data.add(new OptionsData(getResources().getString(R.string.places),
-                getResources().getDrawable(R.drawable.placeholder)));
+                R.drawable.place));
         data.add(new OptionsData(getResources().getString(R.string.restaurant),
-                getResources().getDrawable(R.drawable.placeholder)));
+                R.drawable.restaurant));
         data.add(new OptionsData(getResources().getString(R.string.hotels),
-                getResources().getDrawable(R.drawable.placeholder)));
+                R.drawable.hotel));
         data.add(new OptionsData(getResources().getString(R.string.memories),
-                getResources().getDrawable(R.drawable.placeholder)));
+                R.drawable.memory));
         return data;
     }
 }

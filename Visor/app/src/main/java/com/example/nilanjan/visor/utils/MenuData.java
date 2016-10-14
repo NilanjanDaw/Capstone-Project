@@ -10,9 +10,10 @@ public class MenuData implements Serializable {
     private String title, address, thumbnailReference;
     private double rating, latitude, longitude;
     private boolean isOpen;
+    private String placeID;
 
     public MenuData(String title, String address, String thumbnailReference,
-                    double latitude, double longitude, double rating, boolean isOpen) {
+                    double latitude, double longitude, double rating, boolean isOpen, String placeID) {
         this.title = title;
         this.address = address;
         this.thumbnailReference = thumbnailReference;
@@ -20,6 +21,7 @@ public class MenuData implements Serializable {
         this.isOpen = isOpen;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.placeID = placeID;
     }
 
     public String getTitle() {
@@ -48,5 +50,9 @@ public class MenuData implements Serializable {
 
     public boolean isOpen() {
         return isOpen;
+    }
+
+    public String getPlaceID() {
+        return placeID;
     }
 }

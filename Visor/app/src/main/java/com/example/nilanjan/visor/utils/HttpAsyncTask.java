@@ -22,10 +22,13 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
     private static String TAG = "HttpAsyncTask";
     public JSONArray jsonResponseArray;
+    public JSONObject jsonResponse;
     public OnFinish delegate;
+    private Object object;
 
-    public HttpAsyncTask(OnFinish delegate) {
+    public HttpAsyncTask(OnFinish delegate, Object object) {
         this.delegate = delegate;
+        this.object = object;
     }
 
     @Override
@@ -43,7 +46,13 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
             int statusCode = urlConnection.getResponseCode();
             if (statusCode == 200) {
                 Log.d(TAG, "doInBackground: Request: Successful");
-                String result = readResponse(inputStream);
+                String result;
+                Log.d(TAG, "doInBackground: " + object.getClass().getSimpleName());
+                if (!object.getClass().getSimpleName().equalsIgnoreCase("DetailsActivity"))
+                    result = readResponse(inputStream);
+                else {
+                    result = readResponse(inputStream, object);
+                }
                 //Log.d("Response", result);
             } else {
                 Log.d(TAG, "doInBackground: Request: Failed");
@@ -52,6 +61,21 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String readResponse(InputStream inputStream, Object object) {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line, result = "";
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                result += line;
+            }
+            JSONObject jsonResponse = new JSONObject(result);
+            this.jsonResponse = jsonResponse.optJSONObject("result");
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private String readResponse(InputStream inputStream) {
@@ -72,10 +96,10 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        delegate.processData(jsonResponseArray);
+        delegate.processData(jsonResponseArray, jsonResponse);
     }
 
     public interface OnFinish {
-        void processData(JSONArray array);
+        void processData(JSONArray array, JSONObject jsonObject);
     }
 }

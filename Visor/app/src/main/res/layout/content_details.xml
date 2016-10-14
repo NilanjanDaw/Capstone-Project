@@ -57,26 +57,81 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:layout_gravity="bottom"
+            android:background="#333"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/detail_metabar_vert_padding"
+            android:paddingLeft="@dimen/detail_inner_horiz_margin"
+            android:paddingRight="@dimen/detail_inner_horiz_margin"
+            android:paddingTop="@dimen/detail_metabar_vert_padding">
 
-            <RatingBar
-                android:id="@+id/ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="0dp"
+            <com.example.nilanjan.visor.widgets.HeaderTextView
+                style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:lineSpacingMultiplier="0.9"
+                android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
+                android:text="@string/details"
+                android:textColor="#fff"
+                android:textSize="@dimen/detail_title_text_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/card_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.58"
-                android:numStars="5" />
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/card_margin"
+                android:weightSum="1">
 
-            <TextView
-                android:id="@+id/open"
-                android:layout_width="wrap_content"
+                <com.example.nilanjan.visor.widgets.HeaderTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/rating_label"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.46"
+                    android:isIndicator="true"
+                    android:stepSize="0.1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.42"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:orientation="horizontal"
+                android:weightSum="1">
 
+                <com.example.nilanjan.visor.widgets.HeaderTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.40"
+                    android:text="@string/status_label"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

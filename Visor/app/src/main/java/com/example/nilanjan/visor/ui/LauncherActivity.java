@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -152,7 +153,7 @@ public class LauncherActivity extends AppCompatActivity
                 "&key=" + Constants.API_KEY;
         HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
             @Override
-            public void processData(JSONArray array) {
+            public void processData(JSONArray array, JSONObject object) {
                 try {
                     location.setPlaceID(array.getJSONObject(0).getString("place_id"));
                     Log.d(TAG, "processData: " + location.getPlaceID());
@@ -166,7 +167,7 @@ public class LauncherActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
-        });
+        }, this);
 
         asyncTask.execute(url);
     }
