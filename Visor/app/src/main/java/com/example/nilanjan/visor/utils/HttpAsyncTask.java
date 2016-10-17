@@ -32,10 +32,10 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(String... urls) {
         InputStream inputStream = null;
         HttpURLConnection urlConnection = null;
-        String urlString = params[0];
+        String urlString = urls[0];
 
         Log.d(TAG, "doInBackground: " + urlString);
         try {
@@ -48,10 +48,12 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
                 Log.d(TAG, "doInBackground: Request: Successful");
                 String result;
                 Log.d(TAG, "doInBackground: " + object.getClass().getSimpleName());
-                if (!object.getClass().getSimpleName().equalsIgnoreCase("DetailsActivity"))
+                if (!object.getClass().getSimpleName().equalsIgnoreCase("DetailsActivity")) {
                     result = readResponse(inputStream);
-                else {
+
+                } else {
                     result = readResponse(inputStream, object);
+                    //Log.d(TAG, "doInBackground: " + result);
                 }
                 //Log.d("Response", result);
             } else {
@@ -75,6 +77,7 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
+
         return result;
     }
 

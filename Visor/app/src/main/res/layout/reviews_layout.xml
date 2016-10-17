@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="top"
-    android:background="#333"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/detail_metabar_vert_padding"
-    android:paddingLeft="@dimen/detail_inner_horiz_margin"
-    android:paddingRight="@dimen/detail_inner_horiz_margin"
-    android:paddingTop="@dimen/detail_metabar_vert_padding">
+    android:orientation="vertical">
+
 
     <com.example.nilanjan.visor.widgets.HeaderTextView
-        style="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:lineSpacingMultiplier="0.9"
-        android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
+        android:paddingBottom="20dp"
+        android:paddingStart="20dp"
+        android:paddingTop="@dimen/card_margin"
         android:text="@string/reviews"
-        android:textColor="#fff"
-        android:textSize="@dimen/detail_title_text_size"
-        android:textStyle="bold" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_review"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="true"
+        android:paddingBottom="28dp"
+        android:paddingLeft="@dimen/list_side_margin"
+        android:paddingRight="@dimen/list_side_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>

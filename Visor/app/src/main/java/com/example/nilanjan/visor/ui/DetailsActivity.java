@@ -11,6 +11,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +28,10 @@ import com.akexorcist.googledirection.util.DirectionConverter;
 import com.example.nilanjan.visor.R;
 import com.example.nilanjan.visor.utils.Constants;
 import com.example.nilanjan.visor.utils.Coordinate;
+import com.example.nilanjan.visor.utils.HttpAsyncTask;
 import com.example.nilanjan.visor.utils.MenuData;
+import com.example.nilanjan.visor.utils.ReviewAdapter;
+import com.example.nilanjan.visor.utils.ReviewData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +39,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -58,7 +67,8 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
     ImageView img;
     @Bind(R.id.ratingBar)
     RatingBar ratings;
-
+    @Bind(R.id.recycler_view_review)
+    RecyclerView reviewRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +78,6 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-
         Intent intent = getIntent();
         coordinate = (Coordinate) intent.getSerializableExtra("coordinate");
         destinationData = (MenuData) intent.getSerializableExtra("data");
@@ -98,7 +107,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                String uri = "http://maps.google.com/maps?saddr=" + destinationData.getLatitude() + "," + destinationData.getLongitude();
+                String uri = "http://maps.google.com/maps?daddr=" + destinationData.getLatitude() + "," + destinationData.getLongitude();
                 shareIntent.setType("text/plain");
                 String subject = getString(R.string.shareSubject);
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
@@ -109,14 +118,16 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         navigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Intent intent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://maps.google.com/maps?saddr=" + coordinate.getLatitude() + "," + coordinate.getLongitude()
                                 + "&daddr=" + destinationData.getLatitude() + "," + destinationData.getLongitude()));
                 startActivity(intent);
             }
         });
         Log.d(TAG, "onCreate: " + destinationData.getPlaceID());
-        //getLocationReview();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        reviewRecyclerView.setLayoutManager(layoutManager);
+        getReviews();
     }
 
     @Override
@@ -154,24 +165,33 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 });
     }
 
-    /*public void getLocationReview() {
-        String url = "https://maps.googleapis.com/maps/api/place/details/json?" +
+    public void getReviews() {
+        String urlReview = "https://maps.googleapis.com/maps/api/place/details/json?" +
                 "placeid=" + destinationData.getPlaceID() +
                 "&key=" + Constants.API_KEY;
-        HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
+        Log.d(TAG, "getReviews: " + urlReview);
+        HttpAsyncTask reviewGetterTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
             @Override
-            public void processData(JSONArray array, JSONObject object) {
+            public void processData(JSONArray array, JSONObject jsonObject) {
                 try {
-                    JSONArray reviews = object.optJSONArray("reviews");
-                    for(int i = 0;i < reviews.length();i++) {
-
+                    JSONArray reviewList = jsonObject.getJSONArray("reviews");
+                    ArrayList<ReviewData> reviews = new ArrayList<>();
+                    for (int i = 0; i < reviewList.length(); i++) {
+                        JSONObject review = reviewList.getJSONObject(i);
+                        Log.d(TAG, "processData: " + review.getString("author_name"));
+                        ReviewData reviewData = new ReviewData(review.getString("author_name"), review.getString("text"));
+                        reviews.add(reviewData);
                     }
+
+                    ReviewAdapter reviewAdapter = new ReviewAdapter(reviews);
+                    reviewRecyclerView.setAdapter(reviewAdapter);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }, this);
+        reviewGetterTask.execute(urlReview);
+    }
 
-        asyncTask.execute(url);
-    }*/
 }
