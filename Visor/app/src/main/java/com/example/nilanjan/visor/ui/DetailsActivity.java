@@ -69,6 +69,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
     RatingBar ratings;
     @Bind(R.id.recycler_view_review)
     RecyclerView reviewRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,7 +186,6 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
 
                     ReviewAdapter reviewAdapter = new ReviewAdapter(reviews);
                     reviewRecyclerView.setAdapter(reviewAdapter);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
