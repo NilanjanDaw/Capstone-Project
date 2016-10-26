@@ -27,4 +27,6 @@
     <string name="details">Details</string>
     <string name="reviews">Reviews</string>
     <string name="status">Status</string>
+    <string name="memory_title">Down the memory lane</string>
+    <string name="title_activity_memory_details">MemoryDetailsActivity</string>
 </resources>

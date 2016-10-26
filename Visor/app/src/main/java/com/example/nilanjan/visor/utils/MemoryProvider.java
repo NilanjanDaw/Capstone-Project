@@ -36,18 +36,18 @@ public class MemoryProvider {
         @InexactContentUri(
                 name = "MEMORY_BY_ID",
                 path = MemoryDatabase.MEMORY + "/#",
-                type = "vnd.android.cursor.item/memories_made",
+                type = "vnd.android.cursor.item/memory",
                 whereColumn = MemoryColumns.ID,
                 pathSegment = 1
         )
-        public static Uri withId(long id) {
-            return buildUri(MemoryDatabase.MEMORY, String.valueOf(id));
+        public static Uri withId(String id) {
+            return buildUri(MemoryDatabase.MEMORY, id);
         }
 
         @InexactContentUri(
                 name = "MEMORY_BY_HEADER",
                 path = MemoryDatabase.MEMORY + "/$",
-                type = "vnd.android.cursor.item/memories_made",
+                type = "vnd.android.cursor.item/memory",
                 whereColumn = MemoryColumns.HEADER,
                 pathSegment = 1
         )

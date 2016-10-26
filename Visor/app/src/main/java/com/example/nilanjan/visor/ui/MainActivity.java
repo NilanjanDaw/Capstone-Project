@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("coordinate", coordinate);
                     startActivity(intent);
                 } else {
-                    Log.d(TAG, "onItemClick: Not yet ready");
+                    Intent intent = new Intent(getBaseContext(), MemoryActivity.class);
+                    intent.putExtra("coordinate", coordinate);
+                    startActivity(intent);
                 }
             }
         });

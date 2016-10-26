@@ -37,7 +37,16 @@
             android:authorities="com.example.nilanjan.visor.MemoryProvider"
             android:exported="false" />
 
-        <activity android:name=".ui.MemoryActivity"></activity>
+        <activity android:name=".ui.MemoryActivity" />
+        <activity
+            android:name=".ui.MemoryDetailsActivity"
+            android:label="@string/title_activity_memory_details"
+            android:parentActivityName=".ui.MemoryActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nilanjan.visor.ui.MemoryActivity" />
+        </activity>
     </application>
 
 </manifest>
