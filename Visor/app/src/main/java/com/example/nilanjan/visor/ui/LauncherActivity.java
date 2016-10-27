@@ -39,7 +39,7 @@ public class LauncherActivity extends AppCompatActivity
 
     private static final String TAG = "LauncherActivity";
     private static final int REQUEST_CODE = 10;
-    Intent intent;
+    private Intent intent;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
@@ -53,12 +53,6 @@ public class LauncherActivity extends AppCompatActivity
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 
@@ -134,11 +128,11 @@ public class LauncherActivity extends AppCompatActivity
                         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
                     } else {
                         Log.d(TAG, "onRequestPermissionsResult: Location is required");
-                        Utils.showToast("Location is required", getApplicationContext());
+                        Utils.showToast(getResources().getString(R.string.required), getApplicationContext());
                     }
                 } else {
                     Log.d(TAG, "onRequestPermissionsResult: Location is required");
-                    Utils.showToast("Location is required", getApplicationContext());
+                    Utils.showToast(getResources().getString(R.string.required), getApplicationContext());
                     finish();
                 }
 
@@ -146,7 +140,7 @@ public class LauncherActivity extends AppCompatActivity
     }
 
 
-    public void setLocation(final Coordinate location) {
+    private void setLocation(final Coordinate location) {
 
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                 "location=" + location.getLatitude() + "," + location.getLongitude() +

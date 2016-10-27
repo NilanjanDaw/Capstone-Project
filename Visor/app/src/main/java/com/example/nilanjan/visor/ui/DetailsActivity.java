@@ -52,9 +52,6 @@ import butterknife.ButterKnife;
 public class DetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "DetailsActivity";
-    Coordinate coordinate;
-    MenuData destinationData;
-    GoogleMap googleMap;
     @Bind(R.id.navigate)
     Button navigate;
     @Bind(R.id.place_title)
@@ -69,6 +66,9 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
     RatingBar ratings;
     @Bind(R.id.recycler_view_review)
     RecyclerView reviewRecyclerView;
+    private Coordinate coordinate;
+    private MenuData destinationData;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +150,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                         Log.d(TAG, "onDirectionSuccess: " + rawBody);
                         if (direction.isOK()) {
                             ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
+                            //noinspection deprecation
                             googleMap.addPolyline(DirectionConverter.createPolyline(getBaseContext(), directionPositionList, 5, getResources().getColor(R.color.accent)));
 
                         } else {
@@ -166,7 +167,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 });
     }
 
-    public void getReviews() {
+    private void getReviews() {
         String urlReview = "https://maps.googleapis.com/maps/api/place/details/json?" +
                 "placeid=" + destinationData.getPlaceID() +
                 "&key=" + Constants.API_KEY;

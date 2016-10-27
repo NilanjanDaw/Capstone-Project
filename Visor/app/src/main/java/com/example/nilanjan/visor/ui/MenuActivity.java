@@ -17,6 +17,8 @@ import com.example.nilanjan.visor.utils.MenuAdapter;
 import com.example.nilanjan.visor.utils.MenuData;
 import com.example.nilanjan.visor.utils.Utils;
 import com.example.nilanjan.visor.widgets.HeaderTextView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,12 +38,18 @@ public class MenuActivity extends AppCompatActivity {
     @Bind(R.id.recycler_view_menu)
     RecyclerView recyclerView;
     private Coordinate coordinate;
-    private List<MenuData> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+        adView.loadAd(adRequest);
+
+
         ButterKnife.bind(this);
         Intent intent = getIntent();
         String mode = intent.getStringExtra("mode");
@@ -62,48 +70,52 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public boolean getPlaces(String mode) {
-
-        String params = "";
-        if (mode.equalsIgnoreCase(getResources().getString(R.string.places))) {
-            for (String parameter : Constants.PLACES_OF_INTEREST) {
-                params += parameter + "|";
+        try {
+            String params = "";
+            if (mode.equalsIgnoreCase(getResources().getString(R.string.places))) {
+                for (String parameter : Constants.PLACES_OF_INTEREST) {
+                    params += parameter + "|";
+                }
+            } else if (mode.equalsIgnoreCase(getResources().getString(R.string.restaurant))) {
+                params = "restaurant|cafe";
+            } else if (mode.equalsIgnoreCase(getResources().getString(R.string.hotels))) {
+                params = "lodging";
             }
-        } else if (mode.equalsIgnoreCase(getResources().getString(R.string.restaurant))) {
-            params = "restaurant|cafe";
-        } else if (mode.equalsIgnoreCase(getResources().getString(R.string.hotels))) {
-            params = "lodging";
+            params = params.substring(0, params.length() - 1);
+            StringBuilder query = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+            query.append("location=")
+                    .append(coordinate.getLatitude())
+                    .append(",")
+                    .append(coordinate.getLongitude());
+            query.append("&type=").append(params);
+            query.append("&rankby=prominence");
+            query.append("&radius=10000");
+            query.append("&key=" + Constants.API_KEY);
+            Log.d(TAG, "getPlaces: " + query);
+            final HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
+                @Override
+                public void processData(JSONArray array, JSONObject object) {
+                    List<MenuData> data = Utils.parseData(array);
+                    Log.d(TAG, "processData: " + data.size());
+                    MenuAdapter adapter = new MenuAdapter(data, new MenuAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(MenuData data) {
+                            Intent intent = new Intent(getBaseContext(), DetailsActivity.class);
+                            intent.putExtra("data", data);
+                            intent.putExtra("coordinate", coordinate);
+                            startActivity(intent);
+                        }
+                    });
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setAdapter(adapter);
+                }
+            }, this);
+            asyncTask.execute(query.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        params = params.substring(0, params.length() - 1);
-        StringBuilder query = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        query.append("location=")
-                .append(coordinate.getLatitude())
-                .append(",")
-                .append(coordinate.getLongitude());
-        query.append("&type=" + params);
-        query.append("&rankby=prominence");
-        query.append("&radius=10000");
-        query.append("&key=" + Constants.API_KEY);
-        Log.d(TAG, "getPlaces: " + query);
-        final HttpAsyncTask asyncTask = new HttpAsyncTask(new HttpAsyncTask.OnFinish() {
-            @Override
-            public void processData(JSONArray array, JSONObject object) {
-                List<MenuData> data = Utils.parseData(array);
-                Log.d(TAG, "processData: " + data.size());
-                MenuAdapter adapter = new MenuAdapter(data, new MenuAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(MenuData data) {
-                        Intent intent = new Intent(getBaseContext(), DetailsActivity.class);
-                        intent.putExtra("data", data);
-                        intent.putExtra("coordinate", coordinate);
-                        startActivity(intent);
-                    }
-                });
-                progressBar.setVisibility(View.GONE);
-                recyclerView.setAdapter(adapter);
-            }
-        }, this);
-        asyncTask.execute(query.toString());
-        return false;
+        return true;
     }
 
 

@@ -2,33 +2,30 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="logo">4dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
     <dimen name="fab_margin_vertical">6dp</dimen>
     <dimen name="fab_margin_horizontal">6dp</dimen>
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
-
+    <dimen name="launcher_margin">32dp</dimen>
+    <dimen name="loader_width">100dp</dimen>
+    <dimen name="loader_height">50dp</dimen>
+    <dimen name="recycler_bottom_padding">28dp</dimen>
+    <dimen name="header_padding">20dp</dimen>
+    <dimen name="label_padding">10dp</dimen>
     <dimen name="appbar_elevation">4dp</dimen>
     <dimen name="appbar_layout_height">400dp</dimen>
-    <dimen name="appbar_margin">40dp</dimen>
 
     <dimen name="collapsing_toolbar_margin_start">48dp</dimen>
     <dimen name="collapsing_toolbar_margin_end">64dp</dimen>
 
     <dimen name="detail_title_text_size">32sp</dimen>
-    <dimen name="detail_body_text_size">22sp</dimen>
-    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
-    <dimen name="detail_photo_height">304dp</dimen>
     <dimen name="detail_map_height">450dp</dimen>
-    <dimen name="detail_card_top_margin">@dimen/detail_photo_height</dimen>
     <dimen name="detail_inner_horiz_margin">16dp</dimen>
-    <dimen name="detail_card_max_width">10000dp</dimen> <!-- force match_parent -->
+    <!-- force match_parent -->
     <dimen name="detail_metabar_vert_padding">16dp</dimen>
     <dimen name="detail_metabar_title_bottom_padding">4dp</dimen>
-    <dimen name="detail_body_top_margin">16dp</dimen>
-    <dimen name="detail_body_bottom_margin">88dp</dimen>
 
     <dimen name="card_margin">4dp</dimen>
 
@@ -38,4 +35,10 @@
 
     <dimen name="option_image_height">200dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>

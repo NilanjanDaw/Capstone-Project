@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
+        android:paddingEnd="20dp"
         android:paddingStart="20dp"
         android:paddingTop="@dimen/card_margin"
         android:text="@string/reviews"
@@ -22,8 +23,8 @@
         android:clipToPadding="false"
         android:nestedScrollingEnabled="true"
         android:paddingBottom="28dp"
-        android:paddingLeft="@dimen/list_side_margin"
-        android:paddingRight="@dimen/list_side_margin"
+        android:paddingEnd="@dimen/list_side_margin"
+        android:paddingStart="@dimen/list_side_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>

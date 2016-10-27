@@ -20,11 +20,10 @@ import java.net.URL;
  */
 public class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
-    private static String TAG = "HttpAsyncTask";
-    public JSONArray jsonResponseArray;
-    public JSONObject jsonResponse;
-    public OnFinish delegate;
-    private Object object;
+    private final OnFinish delegate;
+    private final Object object;
+    private JSONArray jsonResponseArray;
+    private JSONObject jsonResponse;
 
     public HttpAsyncTask(OnFinish delegate, Object object) {
         this.delegate = delegate;
@@ -37,6 +36,7 @@ public class HttpAsyncTask extends AsyncTask<String, Void, String> {
         HttpURLConnection urlConnection = null;
         String urlString = urls[0];
 
+        String TAG = "HttpAsyncTask";
         Log.d(TAG, "doInBackground: " + urlString);
         try {
             URL url = new URL(urlString);

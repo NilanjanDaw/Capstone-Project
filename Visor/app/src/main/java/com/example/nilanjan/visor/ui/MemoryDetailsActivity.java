@@ -34,7 +34,6 @@ public class MemoryDetailsActivity extends AppCompatActivity {
     @Bind(R.id.body)
     TextView body;
     private int mode;
-    private Coordinate coordinate;
     private MemoryData data;
 
     @Override
@@ -50,7 +49,7 @@ public class MemoryDetailsActivity extends AppCompatActivity {
         body.setKeyListener(null);
         header.setKeyListener(null);
         Intent intent = getIntent();
-        coordinate = (Coordinate) intent.getSerializableExtra("coordinate");
+        Coordinate coordinate = (Coordinate) intent.getSerializableExtra("coordinate");
         if (mode == 2) {
             data = (MemoryData) getIntent().getSerializableExtra("data");
             header.setText(data.getHeader());
@@ -90,8 +89,6 @@ public class MemoryDetailsActivity extends AppCompatActivity {
         values.put(MemoryColumns.BODY, body.getText().toString());
         values.put(MemoryColumns.HEADER, header.getText().toString());
         values.put(MemoryColumns.DATE, Calendar.getInstance().getTime().toString());
-        values.put(MemoryColumns.LATITUDE, "0");
-        values.put(MemoryColumns.LONGITUDE, "0");
         getContentResolver().update(MemoryProvider.Memories.CONTENT_URI, values, MemoryColumns.ID + "=?", new String[]{id});
     }
 
@@ -102,9 +99,6 @@ public class MemoryDetailsActivity extends AppCompatActivity {
         values.put(MemoryColumns.BODY, body.getText().toString());
         values.put(MemoryColumns.HEADER, header.getText().toString());
         values.put(MemoryColumns.DATE, Calendar.getInstance().getTime().toString());
-        values.put(MemoryColumns.LATITUDE, "0");
-        values.put(MemoryColumns.LONGITUDE, "0");
-
         Uri uri = getContentResolver().insert(MemoryProvider.Memories.CONTENT_URI, values);
         Log.d(TAG, "createNewMemory: " + uri.toString());
     }

@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.example.nilanjan.visor.ui.MenuActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/appbar_elevation"
@@ -40,9 +38,9 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="true"
-        android:paddingBottom="28dp"
-        android:paddingLeft="@dimen/list_side_margin"
-        android:paddingRight="@dimen/list_side_margin"
+        android:paddingBottom="@dimen/recycler_bottom_padding"
+        android:paddingEnd="@dimen/list_side_margin"
+        android:paddingStart="@dimen/list_side_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ProgressBar
@@ -52,4 +50,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone" />
+
+    <!-- view for AdMob Banner Ad -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id" />
+
 </android.support.design.widget.CoordinatorLayout>

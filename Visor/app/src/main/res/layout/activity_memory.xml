@@ -2,14 +2,12 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.example.nilanjan.visor.ui.MainActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -51,9 +49,9 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="true"
-        android:paddingBottom="28dp"
-        android:paddingLeft="@dimen/list_side_margin"
-        android:paddingRight="@dimen/list_side_margin"
+        android:paddingBottom="@dimen/recycler_bottom_padding"
+        android:paddingEnd="@dimen/list_side_margin"
+        android:paddingStart="@dimen/list_side_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
