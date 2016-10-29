@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -26,9 +29,10 @@ import java.util.Arrays;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MemoryActivity extends AppCompatActivity {
+public class MemoryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MemoryActivity";
+    private static final int URL_LOADER = 0;
     @Bind(R.id.memory_recycler_view)
     RecyclerView recyclerView;
     @Bind(R.id.fab_memory)
@@ -72,39 +76,49 @@ public class MemoryActivity extends AppCompatActivity {
     }
 
     private void getMemories() {
-        Cursor cursor = null;
-        try {
-            ArrayList<MemoryData> memoryList = new ArrayList<>();
-            cursor = this.getContentResolver().query(MemoryProvider.Memories.CONTENT_URI, null, null, null, null);
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Log.d(TAG, "getMemories: " + Arrays.toString(cursor.getColumnNames()));
-                MemoryData data = new MemoryData(
-                        cursor.getString(cursor.getColumnIndex(MemoryColumns.ID)),
-                        cursor.getString(cursor.getColumnIndex(MemoryColumns.DATE)),
-                        cursor.getString(cursor.getColumnIndex(MemoryColumns.HEADER)),
-                        cursor.getString(cursor.getColumnIndex(MemoryColumns.BODY)),
-                        cursor.getString(cursor.getColumnIndex(MemoryColumns.LATITUDE)),
-                        cursor.getString(cursor.getColumnIndex(MemoryColumns.LONGITUDE))
-                );
-                memoryList.add(data);
-                cursor.moveToNext();
-            }
-            MemoryAdapter adapter = new MemoryAdapter(memoryList, new MemoryAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(MemoryData data) {
-                    Log.d(TAG, "onItemClick: " + data.getHeader());
-                    Log.d(TAG, "onItemClick: " + data.getBody() + " " + data.getId());
-                    Intent intent = new Intent(getBaseContext(), MemoryDetailsActivity.class);
-                    intent.putExtra("mode", 2);
-                    intent.putExtra("data", data);
-                    startActivity(intent);
-                }
-            });
-            recyclerView.setAdapter(adapter);
-        } catch (NullPointerException e) {
-            Log.d(TAG, "getMemories:  No memories found");
+
+        getSupportLoaderManager().initLoader(URL_LOADER, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, MemoryProvider.Memories.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        cursor.moveToFirst();
+        ArrayList<MemoryData> memoryList = new ArrayList<>();
+        while (!cursor.isAfterLast()) {
+            Log.d(TAG, "getMemories: " + Arrays.toString(cursor.getColumnNames()));
+            MemoryData data = new MemoryData(
+                    cursor.getString(cursor.getColumnIndex(MemoryColumns.ID)),
+                    cursor.getString(cursor.getColumnIndex(MemoryColumns.DATE)),
+                    cursor.getString(cursor.getColumnIndex(MemoryColumns.HEADER)),
+                    cursor.getString(cursor.getColumnIndex(MemoryColumns.BODY)),
+                    cursor.getString(cursor.getColumnIndex(MemoryColumns.LATITUDE)),
+                    cursor.getString(cursor.getColumnIndex(MemoryColumns.LONGITUDE))
+            );
+            memoryList.add(data);
+            cursor.moveToNext();
         }
-        
+        MemoryAdapter adapter = new MemoryAdapter(memoryList, new MemoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(MemoryData data) {
+                Log.d(TAG, "onItemClick: " + data.getHeader());
+                Log.d(TAG, "onItemClick: " + data.getBody() + " " + data.getId());
+                Intent intent = new Intent(getBaseContext(), MemoryDetailsActivity.class);
+                intent.putExtra("mode", 2);
+                intent.putExtra("data", data);
+                startActivity(intent);
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

@@ -158,6 +158,7 @@ public class LauncherActivity extends AppCompatActivity
                     startActivity(intent);
                     finish();
                 } catch (JSONException e) {
+                    Utils.showToast(getResources().getString(R.string.error), getBaseContext());
                     e.printStackTrace();
                 }
             }

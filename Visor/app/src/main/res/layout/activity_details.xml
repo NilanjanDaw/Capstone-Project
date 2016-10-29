@@ -55,6 +55,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/fab_margin_vertical"
         android:layout_marginEnd="@dimen/fab_margin_horizontal"
+        android:contentDescription="@string/share_with_friends"
         android:src="@android:drawable/ic_menu_share"
         app:pressedTranslationZ="@dimen/fab_press_translation_z" />
 </android.support.design.widget.CoordinatorLayout>

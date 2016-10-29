@@ -36,10 +36,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/view"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/view"
+        android:gravity="top|start"
         android:hint="@string/create_a_memory"
-        android:inputType="none"
+        android:inputType="textCapSentences|textMultiLine"
+        android:isScrollContainer="true"
+        android:minLines="10"
+        android:scrollHorizontally="false"
+        android:scrollbars="vertical"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextClock
@@ -47,5 +53,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/header"
         android:layout_alignEnd="@+id/view" />
+
 
 </RelativeLayout>

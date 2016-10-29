@@ -141,7 +141,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
             googleMap.setMyLocationEnabled(true);
         }
         googleMap.addMarker(new MarkerOptions().position(destination).title(destinationData.getTitle()));
-        GoogleDirection.withServerKey(getResources().getString(R.string.google_maps_API))
+        GoogleDirection.withServerKey(getResources().getString(R.string.google_places_API))
                 .from(position)
                 .to(destination)
                 .execute(new DirectionCallback() {
