@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.nilanjan.visor.R;
-import com.example.nilanjan.visor.utils.Coordinate;
 import com.example.nilanjan.visor.utils.MemoryColumns;
 import com.example.nilanjan.visor.utils.MemoryData;
 import com.example.nilanjan.visor.utils.MemoryProvider;
@@ -49,7 +48,6 @@ public class MemoryDetailsActivity extends AppCompatActivity {
         body.setKeyListener(null);
         header.setKeyListener(null);
         Intent intent = getIntent();
-        Coordinate coordinate = (Coordinate) intent.getSerializableExtra("coordinate");
         if (mode == 2) {
             data = (MemoryData) getIntent().getSerializableExtra("data");
             header.setText(data.getHeader());

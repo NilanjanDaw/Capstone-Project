@@ -1,4 +1,9 @@
 <resources>
+    <!--
+        Google PLaces API key goes here
+    -->
+    <string name="google_places_API">ENTER_API_KEY</string>
+
     <string name="app_name" translatable="false">Visor</string>
     <string name="required">Location is required</string>
     <string name="places">Places</string>
@@ -10,8 +15,6 @@
     <integer name="option_column_count">2</integer>
     <string name="title_activity_details">DetailsActivity</string>
     <string name="details_head">Going Places</string>
-
-    <string name="google_maps_API">API_KEY</string>
     <string name="open">Open</string>
     <string name="closed">Closed</string>
     <string name="shareSubject">Hey! Check this place out!</string>
@@ -29,4 +32,5 @@
         For more information, see https://support.google.com/admob/answer/3052638
     <!- -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="share_with_friends">share with friends</string>
 </resources>
